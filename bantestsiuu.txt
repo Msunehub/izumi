@@ -1,3 +1,64 @@
+-- Yêu cầu thư viện tween
+local Tween = require("tween")
+
+-- Tạo hình tròn
+local circle = {
+    x = 100,
+    y = 100,
+    radius = 50
+}
+
+-- Tạo tween cho hình tròn
+local target = { x = 400, y = 300 }
+local duration = 2 -- thời gian tween
+local tween = Tween.new(duration, circle, target)
+
+-- Trạng thái của tween
+local tweenActive = true
+
+-- Hàm dừng tween
+local function stopTween()
+    tweenActive = false
+end
+
+-- Hàm vẽ hình tròn
+local function drawCircle()
+    love.graphics.setColor(1, 0, 0)
+    love.graphics.circle("fill", circle.x, circle.y, circle.radius)
+end
+
+-- Hàm cập nhật tween
+local function updateTween(dt)
+    if tweenActive then
+        tween:update(dt)
+    end
+end
+
+-- Yêu cầu thư viện Love2D
+function love.load()
+    love.graphics.setBackgroundColor(1, 1, 1)
+end
+
+function love.update(dt)
+    updateTween(dt)
+end
+
+function love.draw()
+    drawCircle()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("fill", 50, 400, 100, 50)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("Stop", 75, 420)
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        if x > 50 and x < 150 and y > 400 and y < 450 then
+            stopTween()
+        end
+    end
+end
+
 local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/RedzLibV5/main/Source.Lua"))()
 
 local Window = redzlib:MakeWindow({
